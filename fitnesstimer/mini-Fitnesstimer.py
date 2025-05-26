@@ -1,0 +1,116 @@
+flag_2 = False
+flag_1 = False
+pause_time = 0
+paused = False
+led_state = 0
+start_time = 0
+set_n = 0
+set_n = 1
+
+def on_button_a():
+    global start_time, led_state, pause_time, flag_1, flag_2, set_n
+    start_time = input.running_time()
+    led_state = 0
+    while set_n < 4:
+        if paused:
+            pause_time += 100
+            basic.pause(100)
+            continue
+        time = input.running_time() - (start_time + pause_time)
+        if not (flag_1):
+            led_state += 1
+            set_led_colors(led_state)
+            flag_1 = True
+        if time <= 15000:
+            flash_bars(1)
+        elif time <= 30000:
+            flash_bars(2)
+        elif time <= 45000:
+            flash_bars(3)
+        elif time <= 60000:
+            flash_bars(4)
+        elif time <= 90000:
+            if not (flag_2):
+                led_state += 1
+                set_led_colors(led_state)
+                flag_2 = True
+            flash_bars(5)
+        else:
+            set_n += 1
+            flag_1 = False
+            flag_2 = False
+            start_time = input.running_time()
+    # ---
+    basic.show_icon(IconNames.HAPPY)
+    basic.pause(25)
+    set_n = 1
+    flag_1 = False
+    flag_2 = False
+input.on_button_event(Button.A, input.button_event_click(), on_button_a)
+
+def set_led_colors(led_state2: number):
+    if led_state2 == 1:
+        basic.set_led_colors(0xffff00, 0x000000, 0x000000)
+    elif led_state2 == 2:
+        basic.set_led_colors(0x00ff00, 0x000000, 0x000000)
+    elif led_state2 == 3:
+        basic.set_led_colors(0x00ff00, 0xffff00, 0x000000)
+    elif led_state2 == 4:
+        basic.set_led_colors(0x00ff00, 0x00ff00, 0x000000)
+    elif led_state == 5:
+        basic.set_led_colors(0x00ff00, 0x00ff00, 0xffff00)
+    elif led_state == 6:
+        basic.set_led_colors(0x00ff00, 0x00ff00, 0x00ff00)
+    basic.pause(25)
+
+def on_button_b():
+    global paused
+    paused = not (paused)
+input.on_button_event(Button.B, input.button_event_click(), on_button_b)
+
+def show_bars(n: number):
+    if n == 1:
+        basic.show_leds("""
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            # # # # #
+            """)
+    elif n == 2:
+        basic.show_leds("""
+            . . . . .
+            . . . . .
+            . . . . .
+            # # # # #
+            # # # # #
+            """)
+    elif n == 3:
+        basic.show_leds("""
+            . . . . .
+            . . . . .
+            # # # # #
+            # # # # #
+            # # # # #
+            """)
+    elif n == 4:
+        basic.show_leds("""
+            . . . . .
+            # # # # #
+            # # # # #
+            # # # # #
+            # # # # #
+            """)
+    elif n == 5:
+        basic.show_icon(IconNames.HEART)
+def flash_bars(o: number):
+    show_bars(o)
+    basic.pause(500)
+    basic.show_leds("""
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        """)
+    basic.pause(500)
