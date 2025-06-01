@@ -1,5 +1,6 @@
-worktime = 25*60*1000
-breaktime = 5*60*1000
+timeFactor = 1000
+worktime = 25*60*timeFactor
+breaktime = 5*60*timeFactor
 #---
 flag_2 = False
 flag_1 = False
@@ -19,8 +20,8 @@ def on_button_a():
     bartime = worktime / 5
     while set_n < 4:
         if paused:
-            pause_time += 100
-            basic.pause(100)
+            pause_time += 0.1 * timeFactor
+            basic.pause(0.1 * timeFactor)
             continue
         time = input.running_time() - (start_time + pause_time)
         if not (flag_1):

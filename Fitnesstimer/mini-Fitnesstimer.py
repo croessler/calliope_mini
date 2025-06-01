@@ -1,5 +1,8 @@
-flag_2 = False
+timeFactor = 1000
+trainingTime = 15
+breaktime = 30
 flag_1 = False
+flag_2 = False
 pause_time = 0
 paused = False
 led_state = 0
@@ -13,23 +16,23 @@ def on_button_a():
     led_state = 0
     while set_n < 4:
         if paused:
-            pause_time += 100
-            basic.pause(100)
+            pause_time += 0.1 * timeFactor
+            basic.pause(0.1 * timeFactor)
             continue
         time = input.running_time() - (start_time + pause_time)
         if not (flag_1):
             led_state += 1
             set_led_colors(led_state)
             flag_1 = True
-        if time <= 15000:
+        if time <= trainingTime * timeFactor:
             flash_bars(1)
-        elif time <= 30000:
+        elif time <= 2*trainingTime * timeFactor:
             flash_bars(2)
-        elif time <= 45000:
+        elif time <= 3*trainingTime * timeFactor:
             flash_bars(3)
-        elif time <= 60000:
+        elif time <= 4*trainingTime * timeFactor:
             flash_bars(4)
-        elif time <= 90000:
+        elif time <= (4*trainingTime + breaktime) * timeFactor:
             if not (flag_2):
                 led_state += 1
                 set_led_colors(led_state)
@@ -62,6 +65,7 @@ def set_led_colors(led_state2: number):
     elif led_state == 6:
         basic.set_led_colors(0x00ff00, 0x00ff00, 0x00ff00)
     basic.pause(25)
+# Toggle pause state
 
 def on_button_b():
     global paused
@@ -69,7 +73,15 @@ def on_button_b():
 input.on_button_event(Button.B, input.button_event_click(), on_button_b)
 
 def show_bars(n: number):
-    if n == 1:
+    if n == 0:
+        basic.show_leds("""
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            """)
+    elif n == 1:
         basic.show_leds("""
             . . . . .
             . . . . .
@@ -103,14 +115,12 @@ def show_bars(n: number):
             """)
     elif n == 5:
         basic.show_icon(IconNames.HEART)
+
 def flash_bars(o: number):
     show_bars(o)
-    basic.pause(500)
-    basic.show_leds("""
-        . . . . .
-        . . . . .
-        . . . . .
-        . . . . .
-        . . . . .
-        """)
-    basic.pause(500)
+    basic.pause(0.5 * timeFactor)
+    if o < 4:
+        show_bars(o - 1)
+    else:
+        show_bars(0)
+    basic.pause(0.5 * timeFactor)
