@@ -1,18 +1,3 @@
-timeFactor = 1000
-worktime = 25*60*timeFactor
-breaktime = 5*60*timeFactor
-#---
-flag_2 = False
-flag_1 = False
-pause_time = 0
-paused = False
-bartime = 0
-led_state = 0
-start_time = 0
-set_n = 0
-breaktime = 0
-set_n = 1
-
 def on_button_a():
     global start_time, led_state, bartime, pause_time, flag_1, flag_2, set_n
     start_time = input.running_time()
@@ -128,12 +113,23 @@ def show_bars(n: number):
             """)
     elif n == 6:
         basic.show_icon(IconNames.HEART)
-
 def flash_bars(o: number):
     show_bars(o)
-    basic.pause(500)
+    basic.pause(0.5 * timeFactor)
     if o < 6:
         show_bars(o - 1)
     else:
         show_bars(0)
-    basic.pause(500)
+    basic.pause(0.5 * timeFactor)
+flag_2 = False
+flag_1 = False
+pause_time = 0
+paused = False
+bartime = 0
+led_state = 0
+start_time = 0
+set_n = 0
+timeFactor = 1000
+worktime = 25 * 60 * timeFactor
+breaktime = 5 * 60 * timeFactor
+set_n = 1
