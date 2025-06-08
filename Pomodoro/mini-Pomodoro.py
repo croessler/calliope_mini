@@ -34,6 +34,7 @@ def on_button_a():
             flag_1 = False
             flag_2 = False
             start_time = input.running_time()
+            pause_time = 0
     # ---
     basic.show_icon(IconNames.HAPPY)
     basic.pause(25)
@@ -129,6 +130,9 @@ bartime = 0
 led_state = 0
 start_time = 0
 set_n = 0
+breaktime = 0
+worktime = 0
+timeFactor = 0
 timeFactor = 1000
 worktime = 25 * 60 * timeFactor
 breaktime = 5 * 60 * timeFactor
